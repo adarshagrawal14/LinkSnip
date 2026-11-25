@@ -1,0 +1,15 @@
+# macOS & OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+**/target/
+**/node_modules/
+**/dist/
+**/.idea/
+**/.vscode/
+*.log
+
+# Environment variables
+.env
+.env.local

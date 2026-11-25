@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: linksnip
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${JDBC_DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:linksnip}}}
+    username: ${DB_USERNAME:linksnip}
+    password: ${DB_PASSWORD:linksnip}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
+
+server:
+  port: ${PORT:${SERVER_PORT:8080}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  ip-hash-pepper: ${IP_HASH_PEPPER:dev-only-pepper-change-me}
+  jwt:
+    secret: ${JWT_SECRET:dev-only-secret-key-please-override-in-prod-env-min-32-bytes!!}
+    expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+  rate-limit:
+    anonymous-create:
+      capacity: 5
+      period: 1m
+    authenticated-create:
+      capacity: 30
+      period: 1m
+    redirect:
+      capacity: 100
+      period: 1m
+    login:
+      capacity: 5
+      period: 15m
+
+logging:
+  level:
+    com.linksnip.urlshortener: DEBUG
